@@ -18,6 +18,12 @@ const userSchema = new Schema(
       type: String,
       required: [true, "Name is required."],
     },
+    reviews: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Review"
+      }
+    ],
   },
   {
     // this second object adds extra properties: `createdAt` and `updatedAt`
