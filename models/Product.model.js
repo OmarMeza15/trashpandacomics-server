@@ -17,7 +17,15 @@ const ProductSchema = new Schema(
     imageUrl: {
         type: String,
         required: [true, "Image is required"]
-    }
+    },
+    info: {
+      type: String,
+      required: [true, "Info is required"]
+    },
+    description: {
+      type: String,
+      required: [true, "Description is required"]
+    },
   },
   {
     // this second object adds extra properties: `createdAt` and `updatedAt`
