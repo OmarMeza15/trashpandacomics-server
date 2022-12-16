@@ -46,4 +46,26 @@ router.get("/shop/:id/details", async (req, res, next) => {
     }
 })
 
+// Update the product
+router.put("/shop/:id/details/edit", async (req, res, next) => {
+    const id = req.params
+    const newData = req.body
+    try {
+        const updateProduct = await Product.findOneAndUpdate({_id: req.params.id}, newData, {new: true})
+        res.json(updateProduct) 
+    } catch (err) {
+        console.log(err)
+    }
+})
+
+// Delete the product
+router.delete("/shop/:id/details", async (req, res, next) => {
+    const id = req.params
+    try {
+        await Product.deleteOne({_id: req.params.id})
+    } catch (err) {
+        console.log(err)
+    }
+})
+
 module.exports = router;
