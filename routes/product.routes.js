@@ -2,7 +2,8 @@ const express = require("express");
 const router = express.Router();
 
 const Product = require("../models/Product.model")
-const fileUploader = require("../config/cloudinary.config")
+const fileUploader = require("../config/cloudinary.config");
+const Shopping = require("../models/Shopping.model");
 
 // Create a new product
 router.post("/new-product", async (req, res, next) => {
@@ -37,7 +38,6 @@ router.get("/shop", async (req, res, next) => {
 // Get all the details of the product
 router.get("/shop/:id/details", async (req, res, next) => {
     const {id} = req.params
-    console.log('------->', id)
     try {
         const allDetails = await Product.findById(id)
         res.json(allDetails)
@@ -63,6 +63,29 @@ router.delete("/shop/:id/details", async (req, res, next) => {
     const id = req.params
     try {
         await Product.deleteOne({_id: req.params.id})
+    } catch (err) {
+        console.log(err)
+    }
+})
+
+// Post for the shopping car
+router.post("/shop/:id/details", async (req, res, next) => {
+    const {id} = req.params
+    const {quantity, author} = req.body
+    try {
+        const product = await Product.findById(id)
+        const shopping = await Shopping.create({quantity: quantity, product: product, author: author})
+        console.log('-------->',shopping)
+        res.json(shopping)
+    } catch (err) {
+        console.log(err)
+    }
+})
+
+router.get("/", async (req, res, next) => {
+    try {
+        const allCart = await Shopping.find().populate("author")
+        res.json(allCart)
     } catch (err) {
         console.log(err)
     }
